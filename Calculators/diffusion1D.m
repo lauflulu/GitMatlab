@@ -1,5 +1,5 @@
 % Simulating the 1-D Diffusion equation (Fourier's equation) by the
-...Finite Difference Method(a time march)
+...Finite Difference Method(a time march) change
 % Numerical scheme used is a first order upwind in time and a second order
 ...central difference in space (both Implicit and Explicit)
 

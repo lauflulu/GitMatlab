@@ -5,14 +5,14 @@
 
 %%
 %Specifying Parameters
-nx=100;              %Number of steps in space(x)
-nt=200;              %Number of time steps 
-dt=1;                %Width of each time step
-dx=1/(nx-1);         %Width of space step
-x=0:dx:1;            %Range of x (0,2) and specifying the grid points
+nx=1000;             %Number of steps in space(x)
+nt=3.6*10*10;        %Number of time steps (3.6*10=1 h)
+dt=100;              %Width of each time step
+dx=2/(nx-1);         %Width of space step (200 µm)
+x=0:dx:2;            %Range of x (0,2) and specifying the grid points
 u=zeros(nx,1);       %Preallocating u
 un=zeros(nx,1);      %Preallocating un
-Dv=1;                %Diffusion coefficient/viscosity
+Dv=1e-6;             %Diffusion coefficient/viscosity [mm²/s]
 beta=Dv*dt/(dx*dx);  %Stability criterion (0<=beta<=0.5, for explicit)
 UL=1;                %Left Dirichlet B.C
 UR=0;                %Right Dirichlet B.C
@@ -38,7 +38,7 @@ bc(1)=Dv*dt*UL/dx^2; bc(nx-2)=Dv*dt*UR/dx^2;  %Dirichlet B.Cs
 E=sparse(2:nx-2,1:nx-3,1,nx-2,nx-2); % sparse - big matrix efficient calculator
 A=E+E'-2*speye(nx-2);        %Dirichlet B.Cs speye - speye(n) is a n x n identity matrix created with sparse
 %A(1,1)=-1; A(nx-2,nx-2)=-1; %Neumann B.Cs
-D=speye(nx-2)-(vis*dt/dx^2)*A;
+D=speye(nx-2)-(Dv*dt/dx^2)*A;
 
 %%
 %Calculating the velocity profile for each time step

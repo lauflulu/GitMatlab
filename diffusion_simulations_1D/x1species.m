@@ -18,7 +18,7 @@ dtmax=(20*20)/(D*4*pi*pi);  %Stability criterion dt<(lmin^2/(Dv*4*pi*pi), for im
 %% if nothing is done here, the initial conditions will be u=0 everywhere (but at boundary)
 u=zeros(nx,1);       %initialize concentration profile u
 un=zeros(nx,1);      %initialize un
-u=u+icAddDroplet(80,20,x,nx)+icAddDroplet(120,20,x,nx); %2x 40 µm droplets projected to 1D
+u=u+icAddDroplet(200,20,x,nx); %2x 40 µm droplets projected to 1D
 %u=u+icAddSquare(1.0,0.2,x,nx); %a square wave
 
 
@@ -36,11 +36,14 @@ C=speye(nx-2)-(D*dt/dx^2)*A;
 i=2:nx-1;
 for it=0:nt
     un=u;
-    h=plot(x,u);       %plotting the velocity profile
+    threshold=ones(nx,1)*15/200;
+    aboveTh=u-threshold>=0;
+    h=plot(x,u,'b',x(aboveTh),threshold(aboveTh),'g.',x(~aboveTh),threshold(~aboveTh),'r.');
     axis([0 width 0 3])
     title({['1-D Diffusion with \nu =',num2str(D),' and t_{max} = ',num2str(dtmax)];['time(\itt) = ',num2str(dt*it)]})
     xlabel('Spatial co-ordinate (x) \rightarrow')
     ylabel('Transport property profile (u) \rightarrow')
+    %threshold
     drawnow; 
     refreshdata(h)
     %Uncomment as necessary
@@ -50,7 +53,7 @@ for it=0:nt
     U=un;U(1)=[];U(end)=[];
     U=U+bc;
     U=C\U;
-    u=[UL;U;UR];                      %Dirichlet
+    u=[0;U;0];                      %Dirichlet [UL;U;UR]; 
     %u=[U(1)-UnL*dx;U;U(end)+UnR*dx]; %Neumann
     %}
     %-------------------

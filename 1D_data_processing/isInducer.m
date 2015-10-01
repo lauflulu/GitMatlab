@@ -6,13 +6,11 @@ function [ isInducer ] = isInducer( intensity,threshold )
 [nt,nd]=size(intensity);
 minInt=min(nanmean(intensity(1:20,:),1));
 maxInt=max(nanmean(intensity(1:20,:),1));
-isInducer=zeros(nt,nd*2);
+isInducer=zeros(nt,2*nd);
 for d=1:nd
-    for t=1:nt
         if nanmean(intensity(1:20,d))>(maxInt+minInt)*0.5*threshold
             isInducer(:,2*d-1:2*d)=1;
         end
-    end
 end
 end
 

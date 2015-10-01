@@ -1,4 +1,4 @@
-function [  ] = plotData(position,intensity)
+function [  ] = plotData(position,intensity,th)
 
 [nt,nd]=size(intensity); %number of time steps, number of droplets
 
@@ -11,7 +11,6 @@ pmean=meanPosition;
 
 %% get switch-on time:
 onTime=ones(nd,1)*nt;
-th=.1; %threshold
 for d=1:nd
     for t=2:nt
         if intensity(t,d)>th && onTime(d,1)==nt && intensity(t-1,d)<th
